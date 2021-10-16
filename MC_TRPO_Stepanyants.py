@@ -36,27 +36,34 @@ beta4T = 0.5
 
 CostT = 5
 TimeT = 5
-
+    
 UtilityA = utility(beta0A, beta1A, beta2A, beta3A, beta4A, CostA, CostT, TimeA, TimeT, Income, Numberofpeople)
 UtilityT = utility(beta0T, beta1T, beta2T, beta3T, beta4T, CostT, CostA, TimeT, TimeA, Income, Numberofpeople)
 
 ProbabilityA = probability(UtilityA)
 ProbabilityT = probability(UtilityT)
 
-list1 = []
-list1t = []
-for TimeA in range(2,20):
-  list1.append(probability(utility(beta0A, beta1A, beta2A, beta3A, beta4A, CostA, CostT, TimeA, TimeT, Income, Numberofpeople)))
-  list1t.append(TimeA)
 
-plt.plot(list1t, list1)
-plt.show()
+choose_test = int(input('Input 1 for comparison by Time in Automobile mode and 2 for comparison by Cost in Transit mode? [1/2]'))
 
-list2 = []
-list2t = []
-for CostT in range(5,1,-1):
-  list2.append(probability(utility(beta0T, beta1T, beta2T, beta3T, beta4T, CostT, CostA, TimeT, TimeA, Income, Numberofpeople)))
-  list2t.append(CostT)
+if choose_test == 1:
+    list1 = []
+    list1t = []
+    for TimeA in range(2,20):
+        list1.append(probability(utility(beta0A, beta1A, beta2A, beta3A, beta4A, CostA, CostT, TimeA, TimeT, Income, Numberofpeople)))
+        list1t.append(TimeA)
+    
+    plt.plot(list1t, list1)
+    plt.show()
 
-plt.plot(list2, list2t)
-plt.show()
+if choose_test == 2:
+    list2 = []
+    list2t = []
+    for CostT in range(5,1,-1):
+        list2.append(probability(utility(beta0T, beta1T, beta2T, beta3T, beta4T, CostT, CostA, TimeT, TimeA, Income, Numberofpeople)))
+        list2t.append(CostT)
+    
+    plt.plot(list2, list2t)
+    plt.show()
+
+
