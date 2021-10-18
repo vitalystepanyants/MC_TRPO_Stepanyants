@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>MC_TRPO’s documentation &#8212; MC_TRPO v0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to MC_TRPO’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="mc-trpo-s-documentation">
+<h1>MC_TRPO’s documentation<a class="headerlink" href="#mc-trpo-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">utility</span><span class="p">(</span><span class="n">beta0</span><span class="p">,</span> <span class="n">beta1</span><span class="p">,</span> <span class="n">beta2</span><span class="p">,</span> <span class="n">beta3</span><span class="p">,</span> <span class="n">beta4</span><span class="p">,</span> <span class="n">Cmode</span><span class="p">,</span> <span class="n">Cothermode</span><span class="p">,</span> <span class="n">Tmode</span><span class="p">,</span> <span class="n">Tothermode</span><span class="p">,</span> <span class="n">Income</span><span class="p">,</span> <span class="n">Numberofpeople</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">Utility</span> <span class="o">=</span> <span class="n">beta0</span> <span class="o">+</span> <span class="n">beta1</span><span class="o">*</span><span class="p">(</span><span class="n">Cmode</span> <span class="o">-</span> <span class="n">Cothermode</span><span class="p">)</span> <span class="o">-</span> <span class="n">beta2</span><span class="o">*</span><span class="p">(</span><span class="n">Tmode</span><span class="o">-</span><span class="n">Tothermode</span><span class="p">)</span> <span class="o">+</span> <span class="n">beta3</span><span class="o">*</span><span class="n">Income</span> <span class="o">+</span> <span class="n">beta4</span><span class="o">*</span><span class="n">Numberofpeople</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="n">Utility</span>
+</pre></div>
+</div>
+<p>Function calculates the utility of a transport mode.</p>
+<blockquote>
+<div><p>This function uses the following formula to calculate the utility of a
+transport mode using arguments that are described after the formula:
+Utility = beta0 + beta1*(Cmode - Cothermode) - beta2*(Tmode-Tothermode)
++ beta3*Income + beta4*Numberofpeople.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>beta0: General calibration constant, depicting any other effects on</dt><dd><p>utility except for Traveling Cost, Traveling Time, Household Income
+and Household Number of People. Derived theoretically during data
+preparation, fine-tuned during calibration.</p>
+</dd>
+<dt>beta1: Calibration coefficient for the Traveling Cost parameters.</dt><dd><p>Derived theoretically during data preparation, fine-tuned during
+calibration.</p>
+</dd>
+<dt>beta2: Calibration coefficient for the Traveling Time parameters.</dt><dd><p>Derived theoretically during data preparation, fine-tuned during
+calibration.</p>
+</dd>
+<dt>beta3: Calibration coefficient for the Household Income parameter.</dt><dd><p>Derived theoretically during data preparation, fine-tuned during
+calibration.</p>
+</dd>
+<dt>beta4: Calibration coefficient for the Household Number of People</dt><dd><p>parameter. Derived theoretically during data preparation,
+fine-tuned during calibration.</p>
+</dd>
+</dl>
+<p>Cmode: Traveling Cost of the first compared transport mode.
+Cothermode: Traveling Cost of the second compared transport mode.
+Tmode: Traveling Time of the first compared transport mode.
+Tothermode: Traveling Time of the second compared transport mode.
+Income: Household Income of the modeled household.
+Numberofpeople: Household Number of People of the modeled household.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Utility: The utility of a transport mode.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">probability</span><span class="p">(</span><span class="n">util</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">Probability</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">util</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">util</span><span class="p">))</span>
+<span class="gp">... </span>   <span class="k">return</span> <span class="n">Probability</span>
+</pre></div>
+</div>
+<p>Function calculates mode choice probability based on its utility.</p>
+<blockquote>
+<div><p>This function uses the following formula to calculate the probability of
+travellers choosing a transport mode using arguments that are described
+after the formula:
+Probability = exp(Utility)/(1 + exp(Utility)).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>util: Utility of a transport mode for travellers.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Probability: Probability of travellers choosing a transport mode.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MC_TRPO</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MC_TRPO’s documentation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to MC_TRPO’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Vitaly Stepanyants.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/functions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
